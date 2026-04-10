@@ -25,10 +25,10 @@ function LoginPage() {
             })
             .then(data => {
                 if (data.success) {
-                    // Handle successful login (e.g., redirect to dashboard)
-                    console.log('Login successful:', data);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    navigate('/dashboard', {state: { user: data.user }});
                 } else {
-                    // Handle login failure (e.g., show error message)
+                    // Handle login failure (show error message)
                     setError(data.error);
                 }
             })
