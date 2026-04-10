@@ -10,17 +10,19 @@ function RegisterPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setError('');
 
         if(password.length < 6) {
-            alert("Password must be at least 6 characters long!");
+            setError("Password must be at least 6 characters long!");
             return;
         }
 
         if (password !== confirmPassword) {
-            alert("Passwords do not match!");
+            setError("Passwords do not match!");
             return;
         }
 
@@ -40,11 +42,11 @@ function RegisterPage() {
                     console.log('Registration successful:', data);
                     navigate('/login');
                 } else {
-                    console.error('Registration failed:', data.error);
+                    setError(data.error);
                 }
             })
             .catch(error => {
-                console.error('Error during registration:', error);
+                setError('An error occurred during registration.');
             });
 
         console.log('Registration attempt:', { name, email, password });
@@ -58,6 +60,7 @@ function RegisterPage() {
                         <div className="card-body p-4">
                             <h2 className="card-title text-center mb-4">Bubble Bath Management</h2>
                             <p className="text-center text-muted mb-4">Create a new account</p>
+                            {error && <div className="alert alert-danger">{error}</div>}
 
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">

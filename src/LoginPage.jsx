@@ -7,9 +7,11 @@ function LoginPage() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setError('');
         // Handle login logic here
         const requestOptions = {
             method: 'POST',
@@ -27,12 +29,12 @@ function LoginPage() {
                     console.log('Login successful:', data);
                 } else {
                     // Handle login failure (e.g., show error message)
-                    console.error('Login failed:', data.error);
+                    setError(data.error);
                 }
             })
             .catch(error => {
-                console.error('Error during login:', error);
-        });
+                setError('An error occurred during login.');
+            });
         console.log('Login attempt:', { email, password });
     };
 
@@ -44,6 +46,7 @@ function LoginPage() {
                         <div className="card-body p-4">
                             <h2 className="card-title text-center mb-4">Bubble Bath Management</h2>
                             <p className="text-center text-muted mb-4">Please sign in to continue</p>
+                            {error && <div className="alert alert-danger">{error}</div>}
 
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
