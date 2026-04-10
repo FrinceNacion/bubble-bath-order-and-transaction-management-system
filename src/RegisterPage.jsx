@@ -1,8 +1,11 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function RegisterPage() {
+    const navigate = useNavigate();
+    const registerEndpoint = 'http://localhost/bubble-bath-backend/register.php';
+    
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -11,12 +14,39 @@ function RegisterPage() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        if(password.length < 6) {
+            alert("Password must be at least 6 characters long!");
+            return;
+        }
+
         if (password !== confirmPassword) {
             alert("Passwords do not match!");
             return;
         }
 
-        // Handle registration logic here
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password })
+        };
+
+        fetch(registerEndpoint, requestOptions)
+            .then(async response => {
+                const text = await response.text();
+                return text ? JSON.parse(text) : {};
+            })
+            .then(data => {
+                if (data.success) {
+                    console.log('Registration successful:', data);
+                    navigate('/login');
+                } else {
+                    console.error('Registration failed:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error during registration:', error);
+            });
+
         console.log('Registration attempt:', { name, email, password });
     };
 
