@@ -1,12 +1,31 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function SideBar({user}) {
+  const navigate = useNavigate();
+  const logoutEndpoint = 'http://localhost/bubble-bath-backend/logout.php';
+
+  const requestOptions = {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' }
+  };
+
+  const handleLogout = () => {
+    fetch(logoutEndpoint, requestOptions)
+    .then(async (response) => {
+      const data = await response.json();
+      if (data.success) {
+        navigate('/login');
+      }
+    });
+  }
+
   return (
     <aside className="d-flex flex-column text-white w-auto" style={{ minWidth: 260, backgroundColor: '#0f2c98' }}>
       <div className="d-flex align-items-center gap-2 p-4 border-bottom border-white border-opacity-10">
         <div className="d-inline-flex align-items-center justify-content-center rounded-3 bg-white bg-opacity-10" style={{ width: 36, height: 36 }}>
-            <i class="bi bi-droplet-fill text-white fs-5"></i>
+            <i className="bi bi-droplet-fill text-white fs-5"></i>
         </div>
         <div>
           <div className="fw-semibold">Bubble Bath</div>
@@ -43,12 +62,12 @@ function SideBar({user}) {
 
       <div className="p-4 border-top border-white border-opacity-10">
         <div className="text-white-50 small">Logged in as</div>
-        <div className="fw-semibold">{user.name}</div>
-        <div className="text-white-50 small mb-3">{user.role}</div>
-        <Link to="/login" className="d-inline-flex align-items-center gap-2 text-white-50 text-decoration-none">
+        <div className="fw-semibold">{user?.name}</div>
+        <div className="text-white-50 small mb-3">{user?.role}</div>
+        <div onClick={handleLogout} className="btn p-0 d-inline-flex align-items-center gap-2 text-white-50 text-decoration-none">
           <i className="bi bi-box-arrow-right"></i>
           Logout
-        </Link>
+        </div>
       </div>
     </aside>
   );
