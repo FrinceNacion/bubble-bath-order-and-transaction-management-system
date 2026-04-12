@@ -4,10 +4,11 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './reset.css'
 import "bootstrap/dist/css/bootstrap.min.css"; 
 import "bootstrap/dist/js/bootstrap.bundle.min";  
-import LoginPage from './LoginPage'
-import RegisterPage from './RegisterPage';
-import DashboardPage from './DashboardPage';
-import CustomersPage from './CustomersPage';
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage';
+import DashboardPage from './pages/DashboardPage';
+import CustomersPage from './pages/CustomersPage';
+import MainPage from './pages/MainPage';
 
 const router = createBrowserRouter([
   {
@@ -23,12 +24,18 @@ const router = createBrowserRouter([
     element: <RegisterPage />,
   },
   {
-    path: "/dashboard",
-    element: <DashboardPage />,
-  },
-  {
-    path: "/customers",
-    element: <CustomersPage />,
+    path: "/",
+    element: <MainPage />,
+    children: [
+      {
+        path: "dashboard",
+        element: <DashboardPage />,
+      },
+      {
+        path: "customers",
+        element: <CustomersPage />,
+      },
+    ],
   }
 ]);
 
