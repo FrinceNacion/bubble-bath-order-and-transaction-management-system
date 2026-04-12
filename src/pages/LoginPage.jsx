@@ -9,8 +9,8 @@ function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const logUserIn = (isSuccess) => {
-        if (isSuccess) {
+    const logUserIn = (data) => {
+        if (data.success) {
             navigate('/dashboard');
         } else {
             setError('Invalid email or password. Please try again.');
@@ -19,6 +19,7 @@ function LoginPage() {
 
     const requestOptions = {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
     };
@@ -26,17 +27,15 @@ function LoginPage() {
     const handleSubmit = (e) => {
         e.preventDefault();
         setError('');
-        
+
         fetch(loginEndpoint, requestOptions)
             .then(async response => {
                 const text = await response.text();
                 return text ? JSON.parse(text) : {};
             })
-            .then(data => {
-                logUserIn(data.success);
-            })  
+            .then(data => logUserIn(data))
             .catch(error => {
-                setError('An error occurred during login.');
+                setError('An error occurred during login.', error);
             });
         console.log('Login attempt:', { email, password });
     };
