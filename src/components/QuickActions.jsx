@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 function QuickActions({className}) {
   return (
@@ -7,10 +8,10 @@ function QuickActions({className}) {
         <i className="bi bi-plus-circle"></i>
         Create New Order
       </a>
-      <a href="#" className="btn btn-outline-secondary d-flex align-items-center gap-2 w-100 mb-3">
+      <Link to="/customers" className="btn btn-outline-secondary d-flex align-items-center gap-2 w-100 mb-3">
         <i className="bi bi-people"></i>
         Manage Customers
-      </a>
+      </Link>
       <a href="#" className="btn btn-outline-secondary d-flex align-items-center gap-2 w-100 mb-3">
         <i className="bi bi-receipt"></i>
         Process Payments
