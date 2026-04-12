@@ -1,31 +1,54 @@
 import CustomerCard from "../components/CustomerCard";
-import { useNavigate, useLocation } from 'react-router-dom';
+import NewCustomerButton from "../components/NewCustomerButton";
 import { useState, useEffect } from "react";
 
 function CustomersPage() {
+    const getCustomersEndpoint = 'http://localhost/bubble-bath-backend/get_all_customer.php';
 
-    const customersData = [
-        { name: 'Trijstan Bendoy', email: 'trijstan@example.com', phone: '123-456-7890', address: 'Marilao' },
-        { name: 'Tristan De Castro', email: 'tristan@example.com', phone: '098-765-4321', address: 'Bocaue' }
-    ];
+    const [customers, setCustomers] = useState([]);
+
+    const processFetchedCustomers = (data) => {
+        if (data.success) {
+            console.log('Fetched customers:', data.customers, data.count);
+            if (data.count > 0) {setCustomers(data.customers);} 
+        } else {
+            console.error('Error fetching customers:', data.error);
+        }
+    }
+
+    const fetchCustomers = async () => {
+        try {
+            const response = await fetch(getCustomersEndpoint, { credentials: 'include' });
+            const text = await response.text();
+            const data = text ? JSON.parse(text) : {};
+            processFetchedCustomers(data);
+        } catch (error) {
+            console.error('Error fetching customers:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCustomers();
+    }, []);
 
     return (
         <main className="container flex-fill p-4 p-xl-5">
-            <div className="d-flex flex-row justify-content-between mb-4">
+            <div className="d-flex flex-row justify-content-between mb-4 flex-wrap">
                 <div className="d-flex flex-column">
                     <h4 className="fw-semibold text-dark mb-1">Customer Management</h4>
                     <p className="text-secondary small mb-4">Manage Bubble Bath's customers here.</p>
                 </div>
-                <button className="btn btn-outline-primary d-flex align-items-center gap-2 h-25">
-                    <i className="bi bi-person-plus"></i>
-                    Add Customer
-                </button>
+                <NewCustomerButton />
             </div>
 
             <div>
-                {customersData.map((customer, index) => (
-                    <CustomerCard key={index} customer={customer} />
-                ))}
+                {customers.length > 0 ? (
+                    customers.map((customer, index) => (
+                        <CustomerCard key={index} customer={customer} onRefresh={fetchCustomers} />
+                    ))
+                ) : (
+                    <p className="text-muted">No customers found.</p>
+                )}
             </div>
         </main>
     );
