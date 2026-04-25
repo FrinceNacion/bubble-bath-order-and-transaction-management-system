@@ -11,7 +11,7 @@ function LoginPage() {
 
     const logUserIn = (data) => {
         if (data.success) {
-            navigate('/dashboard');
+            navigate('/dashboard', {state: { user: data.user }});
         } else {
             setError('Invalid email or password. Please try again.');
         }
