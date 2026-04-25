@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import CustomersPage from './pages/CustomersPage';
+import NewOrderPage from './pages/NewOrderPage';
 import NotFoundPage from './pages/NotFoundPage';
 import MainPage from './pages/MainPage';
 
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
         path: "customers",
         element: <CustomersPage />,
       },
+      {
+        path: "new_order",
+        element: <NewOrderPage/>,
+      }
     ],
   },
   {
