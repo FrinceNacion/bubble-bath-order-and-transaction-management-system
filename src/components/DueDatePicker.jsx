@@ -2,8 +2,7 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import { useState } from "react";
 
-function DueDatePicker() {
-    const [selected, setSelected] = useState();
+function DueDatePicker({ selected, onSelect }) {
     const [isVisible, setVisible] = useState(false);
 
     return (
@@ -19,7 +18,7 @@ function DueDatePicker() {
                 className={!isVisible ? 'd-none' : ''}
                 mode="single"
                 selected={selected}
-                onSelect={setSelected}
+                onSelect={onSelect}
                 disabled={{ before: new Date() }}
                 footer={
                     selected ? `Selected: ${selected.toLocaleDateString()}` : "Select"
