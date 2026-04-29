@@ -73,7 +73,40 @@ function CreateOrderForm() {
                             </button>
                         </div>
                     </form>
+
+                    <div className="border-top pt-3 mt-4">
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+                            <div className="text-muted">Total Amount</div>
+                            <div className="fs-4 fw-bold">$0.00</div>
+                        </div>
+
+                        <div className="list-group">
+                            <div className="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div className="fw-semibold">Shirt - Wash & Fold</div>
+                                    <div className="text-muted small">Qty: 2 • $5.00 each</div>
+                                </div>
+                                <div className="fw-bold">$10.00</div>
+                            </div>
+                            <div className="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div className="fw-semibold">Dress - Dry Clean</div>
+                                    <div className="text-muted small">Qty: 1 • $12.00 each</div>
+                                </div>
+                                <div className="fw-bold">$12.00</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+
+            <div className="d-flex flex-column flex-sm-row justify-content-end gap-3">
+                <button type="button" className="btn btn-outline-secondary">
+                    Cancel
+                </button>
+                <button type="button" className="btn btn-primary">
+                    Create Order
+                </button>
             </div>
         </div>
     );
