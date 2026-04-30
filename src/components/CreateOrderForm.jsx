@@ -29,6 +29,7 @@ function CreateOrderForm() {
     const [customer, setCustomer] = useState(null);
     const [dueDate, setDueDate] = useState(null);
     const [garments, setGarments] = useState([]);
+    const [showSuccess, setShowSuccess] = useState(false);
     const navigate = useNavigate();
     const createOrderEndpoint = 'http://localhost/bubble-bath-backend/add_order.php';
 
@@ -46,7 +47,16 @@ function CreateOrderForm() {
             console.log("Data: ", data);
             if (data.success) {
                 console.log('Order added successfully!');
-                // navigate('/dashboard');
+                // Clear inputs
+                setCustomer(null);
+                setDueDate(null);
+                setGarments([]);
+
+                setShowSuccess(true);
+
+                setTimeout(() => {
+                    setShowSuccess(false);
+                }, 3000);
             } else {
                 console.error('Backend Error:', data.error);
             }
@@ -92,6 +102,13 @@ function CreateOrderForm() {
 
     return (
         <div className="d-flex flex-column gap-4">
+            {showSuccess && (
+                <div className="alert alert-success alert-dismissible fade show" role="alert">
+                    <i className="bi bi-check-circle-fill me-2"></i>
+                    Order created successfully! Redirecting to dashboard...
+                    <button type="button" className="btn-close" onClick={() => setShowSuccess(false)} aria-label="Close"></button>
+                </div>
+            )}
             <CustomerForm
                 customer={customer} setCustomer={setCustomer}
                 dueDate={dueDate} setDueDate={setDueDate}
