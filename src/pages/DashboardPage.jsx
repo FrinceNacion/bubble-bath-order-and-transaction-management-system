@@ -81,7 +81,7 @@ function DashboardPage() {
       </div>
 
       <div className="container p-0 d-flex gap-3 flex-row flex-wrap-reverse">
-        <RecentOrdersTable className="w-50" orders={ordersData}/>
+        <RecentOrdersTable className="w-50"/>
         <QuickActions className="w-50" />
       </div>
     </main>
