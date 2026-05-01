@@ -5,6 +5,46 @@ import Authenticate from '../utils/Authenticate';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
+function TotalOrdersCard() {
+  const getTotalOrdersEndpoint = 'http://localhost/bubble-bath-backend/get_orders_by_status.php';
+
+  const [totalOrders, setTotalOrders] = useState([]);
+
+  const processFetchedTotalOrders = (data) => {
+    if (data.success) {
+      if (data.count > 0) { setTotalOrders(data.data); }
+    } else {
+      console.error('Error fetching total orders:', data.error);
+    }
+  }
+
+  const fetchTotalOrders = async () => {
+    try {
+      const response = await fetch(getTotalOrdersEndpoint, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          status: 'pending'
+        })
+      });
+      const text = await response.text();
+      const data = text ? JSON.parse(text) : {};
+      processFetchedTotalOrders(data);
+    } catch (error) {
+      console.error('Error fetching total orders:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTotalOrders();
+  }, []);
+
+  return (
+    <OverviewCard title="Total Orders" value={totalOrders?.length || "--"} icon="bi-box" color="primary" />
+  )
+}
+
 function PendingOrdersCard() {
   const getPendingOrdersEndpoint = 'http://localhost/bubble-bath-backend/get_orders_by_status.php';
 
@@ -106,7 +146,7 @@ function DashboardPage() {
       <p className="text-secondary small mb-4">Welcome back, {user?.name}!</p>
 
       <div className="d-flex gap-3 mb-4 flex-wrap">
-        <OverviewCard title="Total Orders" value="--" icon="bi-box" color="primary" />
+        <TotalOrdersCard />
         <PendingOrdersCard />
         <TotalCustomersCard />
         <OverviewCard title="Today's Revenue" value="--" icon="bi-currency-dollar" color="success" />
