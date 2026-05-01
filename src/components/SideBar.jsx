@@ -42,7 +42,7 @@ function SideBar({user}) {
           <i className="bi bi-people"></i>
           Customers
         </Link>
-        <Link to="/orders" className="d-flex align-items-center gap-2 px-4 py-2 text-white text-decoration-none rounded-3 mb-1">
+        <Link to="/new_order" className="d-flex align-items-center gap-2 px-4 py-2 text-white text-decoration-none rounded-3 mb-1">
           <i className="bi bi-plus-circle"></i>
           New Order
         </Link>

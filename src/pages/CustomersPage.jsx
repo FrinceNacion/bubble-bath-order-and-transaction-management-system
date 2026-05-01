@@ -3,7 +3,7 @@ import NewCustomerButton from "../components/NewCustomerButton";
 import { useState, useEffect } from "react";
 
 function CustomersPage() {
-    const getCustomersEndpoint = 'http://localhost/bubble-bath-backend/get_all_customer.php';
+    const getCustomersEndpoint = 'http://localhost/bubble-bath-backend/get_all_customers.php';
 
     const [customers, setCustomers] = useState([]);
 
