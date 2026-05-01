@@ -2,14 +2,15 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './reset.css'
-import "bootstrap/dist/css/bootstrap.min.css"; 
-import "bootstrap/dist/js/bootstrap.bundle.min";  
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import CustomersPage from './pages/CustomersPage';
 import NewOrderPage from './pages/NewOrderPage';
 import NotFoundPage from './pages/NotFoundPage';
+import OrderTrackPage from './pages/OrderTrackPage';
 import MainPage from './pages/MainPage';
 
 const router = createBrowserRouter([
@@ -39,7 +40,11 @@ const router = createBrowserRouter([
       },
       {
         path: "new_order",
-        element: <NewOrderPage/>,
+        element: <NewOrderPage />,
+      },
+      {
+        path: "orders",
+        element: <OrderTrackPage />,
       }
     ],
   },
