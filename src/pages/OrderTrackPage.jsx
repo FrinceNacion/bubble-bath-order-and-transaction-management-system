@@ -1,9 +1,22 @@
 import { useState, useEffect, useMemo } from 'react';
+import OrderDetailsButton from '../components/OrderDetailsButton';
 
 function OrderListTable({ sortType }) {
     const getOrdersEndpoint = 'http://localhost/bubble-bath-backend/get_all_orders.php';
 
     const [orders, setOrders] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState(null);
+
+    const handleShowModal = (order) => {
+        setSelectedOrder(order);
+        setShowModal(true);
+    }
+
+    const handleHideModal = () => {
+        setShowModal(false);
+        setSelectedOrder(null);
+    }
 
     const processFetchedOrders = (data) => {
         if (data.success) {
@@ -101,10 +114,7 @@ function OrderListTable({ sortType }) {
                                 </div>
                             </div>
                             <div className="d-flex flex-row gap-2 justify-content-end">
-                                <button className="btn btn-outline-dark d-flex flex-row gap-2">
-                                    <i className="bi bi-eye"/>
-                                    See Details
-                                </button>
+                                <OrderDetailsButton order={order} onRefresh={fetchOrders} />
                                 <button className="btn btn-danger">Cancel Order</button>
                             </div>
                         </div>
