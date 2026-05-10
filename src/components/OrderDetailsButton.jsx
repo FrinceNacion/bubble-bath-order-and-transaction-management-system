@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import StatusBadge from "./StatusBadge";
 
 function OrderDetailsModal({ order, onHide, onRefresh }) {
     const garmentsEndpoint = 'http://localhost/bubble-bath-backend/get_garments_by_order.php';
@@ -64,38 +65,6 @@ function OrderDetailsModal({ order, onHide, onRefresh }) {
         }
     };
 
-    const getStatusIcon = (status) => {
-        switch (status) {
-            case 'Pending': return 'bi-clock';
-            case 'In Progress': return 'bi-arrow-repeat';
-            case 'Ready': return 'bi-check2-circle';
-            case 'Claimed': return 'bi-bag-check';
-            case 'Cancelled': return 'bi-x-circle';
-            default: return 'bi-circle';
-        }
-    };
-
-    const getStatusColorClass = (status) => {
-        switch (status) {
-            case 'Pending': return 'text-warning';
-            case 'In Progress': return 'text-primary';
-            case 'Ready': return 'text-success';
-            case 'Claimed': return 'text-info';
-            case 'Cancelled': return 'text-danger';
-            default: return 'text-secondary';
-        }
-    };
-
-    const getStatusBadgeClass = (status) => {
-        switch (status) {
-            case 'Pending': return 'bg-warning text-dark';
-            case 'In Progress': return 'bg-primary text-white';
-            case 'Ready': return 'bg-success text-white';
-            case 'Claimed': return 'bg-info text-dark';
-            case 'Cancelled': return 'bg-danger text-white';
-            default: return 'bg-secondary text-white';
-        }
-    };
 
     return (
         <div className="modal fade show" style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}>
@@ -146,9 +115,8 @@ function OrderDetailsModal({ order, onHide, onRefresh }) {
                                         {statusUpdating && currentStatus === status ? (
                                             <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                         ) : (
-                                            <i className={`bi ${getStatusIcon(status)} ${currentStatus === status ? 'text-white' : getStatusColorClass(status)}`}></i>
+                                            <StatusBadge status={status} size="sm" showIcon={true} className="border-0 p-0 bg-transparent" />
                                         )}
-                                        {status}
                                     </button>
                                 ))}
                             </div>
@@ -204,10 +172,7 @@ function OrderDetailsModal({ order, onHide, onRefresh }) {
                     <div className="modal-footer bg-light border-top d-flex flex-row justify-content-between align-items-center">
                         <div className="d-flex flex-column">
                             <span className="text-secondary small fw-medium">Current Status</span>
-                            <span className={`badge ${getStatusBadgeClass(currentStatus)} px-3 py-2 mt-1 rounded-pill`}>
-                                <i className={`bi ${getStatusIcon(currentStatus)} me-2`}></i>
-                                {currentStatus}
-                            </span>
+                            <StatusBadge status={currentStatus} size="lg" className="mt-1" />
                         </div>
                         <div className="d-flex flex-column text-end">
                             <span className="text-secondary small fw-medium">Grand Total</span>

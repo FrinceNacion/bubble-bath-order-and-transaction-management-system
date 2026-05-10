@@ -1,21 +1,31 @@
 import { useState, useEffect, useMemo } from 'react';
 import OrderDetailsButton from '../components/OrderDetailsButton';
+import StatusBadge from '../components/StatusBadge';
 
 function OrderListTable({ sortType }) {
     const getOrdersEndpoint = 'http://localhost/bubble-bath-backend/get_all_orders.php';
+    const cancelOrderEndpoint = 'http://localhost/bubble-bath-backend/update_order_status.php';
 
     const [orders, setOrders] = useState([]);
-    const [showModal, setShowModal] = useState(false);
-    const [selectedOrder, setSelectedOrder] = useState(null);
 
-    const handleShowModal = (order) => {
-        setSelectedOrder(order);
-        setShowModal(true);
-    }
-
-    const handleHideModal = () => {
-        setShowModal(false);
-        setSelectedOrder(null);
+    const handleCancelOrder = async (orderId) => {
+        try {
+            const response = await fetch(cancelOrderEndpoint, {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ order_id: orderId, status: "Cancelled" })
+            });
+            const data = await response.json();
+            if (data.success) {
+                fetchOrders();
+            } else {
+                alert("Failed to update status: " + data.error);
+            }
+        } catch (error) {
+            console.error("Update status failed:", error);
+            alert("Error updating status. Please try again.");
+        }
     }
 
     const processFetchedOrders = (data) => {
@@ -84,10 +94,10 @@ function OrderListTable({ sortType }) {
                                     <p className="small text-secondary m-0">Order #{order.order_id}</p>        
                                 </div>
                                 <div className="d-flex flex-column">
-                                    <p className="m-0"><span className="badge bg-info text-dark">{order.status}</span></p>
+                                    <p className="m-0"><StatusBadge status={order.status} /></p>
                                 </div>
                             </div>
-                            <div className="d-flex flex-row justify-content-evenly">
+                            <div className="d-flex flex-row justify-content-evenly flex-wrap">
                                 <div className="d-flex flex-column">
                                     <p className="m-0 text-secondary small">
                                         Order Date
@@ -115,7 +125,7 @@ function OrderListTable({ sortType }) {
                             </div>
                             <div className="d-flex flex-row gap-2 justify-content-end">
                                 <OrderDetailsButton order={order} onRefresh={fetchOrders} />
-                                <button className="btn btn-danger">Cancel Order</button>
+                                <button className="btn btn-danger" onClick={() => handleCancelOrder(order.order_id)}>Cancel Order</button>
                             </div>
                         </div>
                     ))
@@ -141,7 +151,7 @@ function OrderTrackPage() {
             </div>
             <div className="d-flex flex-column">
                 <div className="card">
-                    <div className="card-header d-flex flex-row justify-content-between p-3 pb-0 border-bottom-0 bg-white">
+                    <div className="card-header d-flex flex-row flex-wrap gap-2 justify-content-between p-3 pb-0 border-bottom-0 bg-white">
                         <h5 className="card-title m-0">Order List</h5>
                         <div className="btn-group btn-group-sm" role="group" aria-label="radio toggle button group">
                             <input type="radio" className="btn-check" name="sort-type" id="sort-type-date" checked={sortType === 'date'} onChange={() => setSortType('date')}/>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import StatusBadge from './StatusBadge';
 
 function RecentOrdersTable({ className }) {
   const [orders, setOrders] = useState([]);
@@ -34,7 +35,7 @@ function RecentOrdersTable({ className }) {
           </div>
           <div className="text-end">
             <div className="fw-semibold">PHP {order.order_amount}</div>
-            <span className={`badge bg-${order.status === 'pending' ? 'secondary' : order.status === 'claimed' ? 'warning text-dark' : order.status === 'in-progress' ? 'info' : 'success'} text-capitalize`}>{order.status}</span>
+            <StatusBadge status={order.status} size="sm" />
           </div>
         </div>
       ))}
