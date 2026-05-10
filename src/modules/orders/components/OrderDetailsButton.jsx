@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-import StatusBadge from "./StatusBadge";
+import StatusBadge from "../../../common/components/StatusBadge";
+import { API_ENDPOINTS } from "../../../common/services/api";
 
 function OrderDetailsModal({ order, onHide, onRefresh }) {
-    const garmentsEndpoint = 'http://localhost/bubble-bath-backend/get_garments_by_order.php';
-    const updateStatusEndpoint = 'http://localhost/bubble-bath-backend/update_order_status.php';
-
     const [garments, setGarments] = useState([]);
     const [loadingGarments, setLoadingGarments] = useState(true);
     const [statusUpdating, setStatusUpdating] = useState(false);
@@ -15,7 +13,7 @@ function OrderDetailsModal({ order, onHide, onRefresh }) {
     const fetchGarments = async () => {
         setLoadingGarments(true);
         try {
-            const response = await fetch(garmentsEndpoint, {
+            const response = await fetch(API_ENDPOINTS.GARMENTS.GET_BY_ORDER, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -44,7 +42,7 @@ function OrderDetailsModal({ order, onHide, onRefresh }) {
         if (newStatus === currentStatus) return;
         setStatusUpdating(true);
         try {
-            const response = await fetch(updateStatusEndpoint, {
+            const response = await fetch(API_ENDPOINTS.ORDERS.UPDATE_STATUS, {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
@@ -71,7 +69,7 @@ function OrderDetailsModal({ order, onHide, onRefresh }) {
             <div className="modal-dialog modal-dialog-centered modal-lg">
                 <div className="modal-content border-0 shadow">
                     <div className="modal-header pb-3 border-bottom">
-                        <h5 className="modal-title fw-bold" id="newCustomerModalLabel">
+                        <h5 className="modal-title fw-bold">
                             Order Details
                         </h5>
                         <button type="button" className="btn-close" onClick={onHide}></button>
@@ -190,9 +188,9 @@ function OrderDetailsButton({ order, onRefresh }) {
 
     return (
         <>
-            <button className="btn btn-outline-dark d-flex flex-row gap-2 align-items-center" onClick={() => setShowModal(true)}>
+            <button className="btn btn-sm btn-outline-dark d-flex flex-row gap-2 align-items-center" onClick={() => setShowModal(true)}>
                 <i className="bi bi-eye" />
-                See Details
+                Details
             </button>
             {showModal && <OrderDetailsModal order={order} onHide={() => setShowModal(false)} onRefresh={onRefresh} />}
         </>

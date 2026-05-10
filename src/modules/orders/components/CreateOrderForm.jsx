@@ -1,8 +1,9 @@
 import DueDatePicker from "./DueDatePicker";
-import CustomerSelect from "./CustomerSelect";
+import CustomerSelect from "../../customers/components/CustomerSelect";
 import GarmentForm from "./GarmentForm";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_ENDPOINTS } from "../../../common/services/api";
 
 function CustomerForm({ customer, setCustomer, dueDate, setDueDate }) {
     return (
@@ -31,32 +32,25 @@ function CreateOrderForm() {
     const [garments, setGarments] = useState([]);
     const [showSuccess, setShowSuccess] = useState(false);
     const navigate = useNavigate();
-    const createOrderEndpoint = 'http://localhost/bubble-bath-backend/add_order.php';
 
     const handleAddOrder = async (orderData) => {
         try {
-            console.log("Order Data: ", orderData);
-
-            const response = await fetch(createOrderEndpoint, {
+            const response = await fetch(API_ENDPOINTS.ORDERS.ADD, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 body: JSON.stringify(orderData)
             });
             const data = await response.json();
-            console.log("Data: ", data);
             if (data.success) {
-                console.log('Order added successfully!');
-                // Clear inputs
                 setCustomer(null);
                 setDueDate(null);
                 setGarments([]);
-
                 setShowSuccess(true);
-
                 setTimeout(() => {
                     setShowSuccess(false);
-                }, 3000);
+                    navigate('/dashboard');
+                }, 2000);
             } else {
                 console.error('Backend Error:', data.error);
             }
