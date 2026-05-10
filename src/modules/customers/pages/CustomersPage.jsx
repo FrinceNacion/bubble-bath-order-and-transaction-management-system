@@ -1,27 +1,18 @@
 import CustomerCard from "../components/CustomerCard";
 import NewCustomerButton from "../components/NewCustomerButton";
 import { useState, useEffect } from "react";
+import { API_ENDPOINTS } from "../../../common/services/api";
 
 function CustomersPage() {
-    const getCustomersEndpoint = 'http://localhost/bubble-bath-backend/get_all_customers.php';
-
     const [customers, setCustomers] = useState([]);
-
-    const processFetchedCustomers = (data) => {
-        if (data.success) {
-            console.log('Fetched customers:', data.customers, data.count);
-            if (data.count > 0) {setCustomers(data.customers);} 
-        } else {
-            console.error('Error fetching customers:', data.error);
-        }
-    }
 
     const fetchCustomers = async () => {
         try {
-            const response = await fetch(getCustomersEndpoint, { credentials: 'include' });
-            const text = await response.text();
-            const data = text ? JSON.parse(text) : {};
-            processFetchedCustomers(data);
+            const response = await fetch(API_ENDPOINTS.CUSTOMERS.GET_ALL, { credentials: 'include' });
+            const data = await response.json();
+            if (data.success) {
+                setCustomers(data.customers);
+            }
         } catch (error) {
             console.error('Error fetching customers:', error);
         }
