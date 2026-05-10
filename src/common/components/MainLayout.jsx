@@ -1,9 +1,9 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import SideBar from "../components/SideBar";
+import SideBar from "./SideBar";
 import Authenticate from "../utils/Authenticate";
 import { useEffect, useState } from "react";
 
-function MainPage() {
+function MainLayout() {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ function MainPage() {
         };
 
         fetchUser();
-    }, []);
+    }, [navigate]);
 
     return (
         <div className="p-0 m-0 d-flex w-100 min-vh-100 bg-light">
@@ -28,4 +28,4 @@ function MainPage() {
     );
 }
 
-export default MainPage;
+export default MainLayout;
