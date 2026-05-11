@@ -4,14 +4,24 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './reset.css'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage';
-import DashboardPage from './pages/DashboardPage';
-import CustomersPage from './pages/CustomersPage';
-import NewOrderPage from './pages/NewOrderPage';
-import NotFoundPage from './pages/NotFoundPage';
-import OrderTrackPage from './pages/OrderTrackPage';
-import MainPage from './pages/MainPage';
+
+// Layout & Common
+import MainLayout from './common/components/MainLayout';
+import NotFound from './common/components/NotFound';
+
+// Auth Module
+import LoginPage from './modules/auth/pages/LoginPage';
+import RegisterPage from './modules/auth/pages/RegisterPage';
+
+// Dashboard Module
+import DashboardPage from './modules/dashboard/pages/DashboardPage';
+
+// Customer Module
+import CustomersPage from './modules/customers/pages/CustomersPage';
+
+// Order Module
+import NewOrderPage from './modules/orders/pages/NewOrderPage';
+import OrderTrackPage from './modules/orders/pages/OrderTrackPage';
 
 const router = createBrowserRouter([
   {
@@ -28,7 +38,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <MainPage />,
+    element: <MainLayout />,
     children: [
       {
         path: "dashboard",
@@ -50,7 +60,7 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <NotFoundPage />,
+    element: <NotFound />,
   }
 ]);
 

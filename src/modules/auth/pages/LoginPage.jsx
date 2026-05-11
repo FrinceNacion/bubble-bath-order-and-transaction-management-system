@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { API_ENDPOINTS } from '../../../common/services/api';
 
 function LoginPage() {
     const navigate = useNavigate();
-    const loginEndpoint = 'http://localhost/bubble-bath-backend/login.php';
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -17,27 +17,25 @@ function LoginPage() {
         }
     };
 
-    const requestOptions = {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault();
         setError('');
 
-        fetch(loginEndpoint, requestOptions)
+        fetch(API_ENDPOINTS.AUTH.LOGIN, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        })
             .then(async response => {
                 const text = await response.text();
                 return text ? JSON.parse(text) : {};
             })
             .then(data => logUserIn(data))
             .catch(error => {
-                setError('An error occurred during login.', error);
+                setError('An error occurred during login.');
+                console.error('Login error:', error);
             });
-        console.log('Login attempt:', { email, password });
     };
 
     return (

@@ -1,18 +1,16 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Link, useNavigate } from 'react-router-dom';
+import { API_ENDPOINTS } from '../services/api';
 
 function SideBar({user}) {
   const navigate = useNavigate();
-  const logoutEndpoint = 'http://localhost/bubble-bath-backend/logout.php';
-
-  const requestOptions = {
-    method: 'POST',
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json' }
-  };
 
   const handleLogout = () => {
-    fetch(logoutEndpoint, requestOptions)
+    fetch(API_ENDPOINTS.AUTH.LOGOUT, {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' }
+    })
     .then(async (response) => {
       const data = await response.json();
       if (data.success) {

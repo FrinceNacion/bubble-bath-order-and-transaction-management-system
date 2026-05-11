@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { API_ENDPOINTS } from '../../../common/services/api';
 
 function RegisterPage() {
     const navigate = useNavigate();
-    const registerEndpoint = 'http://localhost/bubble-bath-backend/register.php';
     
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -26,20 +25,17 @@ function RegisterPage() {
             return;
         }
 
-        const requestOptions = {
+        fetch(API_ENDPOINTS.AUTH.REGISTER, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email, password })
-        };
-
-        fetch(registerEndpoint, requestOptions)
+        })
             .then(async response => {
                 const text = await response.text();
                 return text ? JSON.parse(text) : {};
             })
             .then(data => {
                 if (data.success) {
-                    console.log('Registration successful:', data);
                     navigate('/login');
                 } else {
                     setError(data.error);
@@ -47,9 +43,8 @@ function RegisterPage() {
             })
             .catch(error => {
                 setError('An error occurred during registration.');
+                console.error('Registration error:', error);
             });
-
-        console.log('Registration attempt:', { name, email, password });
     };
 
     return (

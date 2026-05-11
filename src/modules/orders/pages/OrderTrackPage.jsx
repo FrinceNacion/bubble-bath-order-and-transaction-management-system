@@ -1,16 +1,14 @@
 import { useState, useEffect, useMemo } from 'react';
 import OrderDetailsButton from '../components/OrderDetailsButton';
-import StatusBadge from '../components/StatusBadge';
+import StatusBadge from '../../../common/components/StatusBadge';
+import { API_ENDPOINTS } from '../../../common/services/api';
 
 function OrderListTable({ sortType }) {
-    const getOrdersEndpoint = 'http://localhost/bubble-bath-backend/get_all_orders.php';
-    const cancelOrderEndpoint = 'http://localhost/bubble-bath-backend/update_order_status.php';
-
     const [orders, setOrders] = useState([]);
 
     const handleCancelOrder = async (orderId) => {
         try {
-            const response = await fetch(cancelOrderEndpoint, {
+            const response = await fetch(API_ENDPOINTS.ORDERS.UPDATE_STATUS, {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
@@ -28,25 +26,17 @@ function OrderListTable({ sortType }) {
         }
     }
 
-    const processFetchedOrders = (data) => {
-        if (data.success) {
-            console.log('Fetched orders:', data.orders, data.count);
-            setOrders(data.orders || []);
-        } else {
-            console.error('Error fetching orders:', data.error);
-        }
-    }
-
     const fetchOrders = async () => {
         try {
-            const response = await fetch(getOrdersEndpoint, {
+            const response = await fetch(API_ENDPOINTS.ORDERS.GET_ALL, {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' }
             });
-            const text = await response.text();
-            const data = text ? JSON.parse(text) : {};
-            processFetchedOrders(data);
+            const data = await response.json();
+            if (data.success) {
+                setOrders(data.orders || []);
+            }
         } catch (error) {
             console.error('Error fetching orders:', error);
         }
@@ -60,23 +50,18 @@ function OrderListTable({ sortType }) {
         if (!orders || orders.length === 0) return [];
         const sorted = [...orders];
         if (sortType === 'date') {
-            // Sort by order_date descending (newest first)
             sorted.sort((a, b) => new Date(b.order_date) - new Date(a.order_date));
         } else if (sortType === 'customer') {
-            // Sort by customer ascending (A-Z)
             sorted.sort((a, b) => (a.customer || '').localeCompare(b.customer || ''));
         } else if (sortType === 'amount') {
-            // Sort by amount descending (highest first)
             sorted.sort((a, b) => {
                 const amountA = parseFloat(String(a.order_amount).replace(/[^0-9.-]+/g, '')) || 0;
                 const amountB = parseFloat(String(b.order_amount).replace(/[^0-9.-]+/g, '')) || 0;
                 return amountB - amountA;
             });
         } else if (sortType === 'quantity') {
-            // Sort by quantity descending (highest first)
             sorted.sort((a, b) => parseInt(b.order_item_count) - parseInt(a.order_item_count));
         } else if (sortType === 'status') {
-            // Sort by status ascending
             sorted.sort((a, b) => (a.status || '').localeCompare(b.status || ''));
         }
         return sorted;
@@ -87,8 +72,8 @@ function OrderListTable({ sortType }) {
             <div className="d-flex flex-column gap-3">
                 {sortedOrders.length > 0 ? (
                     sortedOrders.map((order) => (
-                        <div key={order.order_id} className='d-flex card p-3 flex-column w-100'>
-                            <div className="d-flex flex-row justify-content-between">
+                        <div key={order.order_id} className='d-flex card p-3 flex-column w-100 shadow-sm border-0 mb-2'>
+                            <div className="d-flex flex-row justify-content-between mb-3">
                                 <div className="d-flex flex-column">
                                     <p className="m-0 fw-semibold text-dark">{order.customer}</p>
                                     <p className="small text-secondary m-0">Order #{order.order_id}</p>        
@@ -97,35 +82,27 @@ function OrderListTable({ sortType }) {
                                     <p className="m-0"><StatusBadge status={order.status} /></p>
                                 </div>
                             </div>
-                            <div className="d-flex flex-row justify-content-evenly flex-wrap">
+                            <div className="d-flex flex-row justify-content-between flex-wrap gap-3 mb-3 px-2">
                                 <div className="d-flex flex-column">
-                                    <p className="m-0 text-secondary small">
-                                        Order Date
-                                    </p>
-                                    <p className="text-dark">{order.order_date.split(" ")[0]}</p>
+                                    <p className="m-0 text-secondary small">Order Date</p>
+                                    <p className="text-dark small mb-0">{order.order_date.split(" ")[0]}</p>
                                 </div>
                                 <div className="d-flex flex-column">
-                                    <p className="m-0 text-secondary small">
-                                        Due Date
-                                    </p>
-                                    <p className="text-dark">{order.pickup_date.split(" ")[0]}</p>
+                                    <p className="m-0 text-secondary small">Due Date</p>
+                                    <p className="text-dark small mb-0">{order.pickup_date.split(" ")[0]}</p>
                                 </div>
                                 <div className="d-flex flex-column">
-                                    <p className="m-0 text-secondary small">
-                                        Total Amount
-                                    </p>
-                                    <p className="text-dark">₱ {order.order_amount}</p>
+                                    <p className="m-0 text-secondary small">Total Amount</p>
+                                    <p className="text-dark small mb-0">₱ {order.order_amount}</p>
                                 </div>
                                 <div className="d-flex flex-column">
-                                    <p className="m-0 text-secondary small">
-                                        Item Quantity
-                                    </p>
-                                    <p className="text-dark">{order.order_item_count}</p>
+                                    <p className="m-0 text-secondary small">Item Quantity</p>
+                                    <p className="text-dark small mb-0">{order.order_item_count}</p>
                                 </div>
                             </div>
-                            <div className="d-flex flex-row gap-2 justify-content-end">
+                            <div className="d-flex flex-row gap-2 justify-content-end pt-2 border-top">
                                 <OrderDetailsButton order={order} onRefresh={fetchOrders} />
-                                <button className="btn btn-danger" onClick={() => handleCancelOrder(order.order_id)}>Cancel Order</button>
+                                <button className="btn btn-sm btn-outline-danger" onClick={() => handleCancelOrder(order.order_id)}>Cancel Order</button>
                             </div>
                         </div>
                     ))
@@ -135,7 +112,6 @@ function OrderListTable({ sortType }) {
                     </div>
                 )}
             </div>
-
         </div>
     )
 }
@@ -150,10 +126,10 @@ function OrderTrackPage() {
                 <p className="text-secondary small mb-4">Track and Manage Orders.</p>
             </div>
             <div className="d-flex flex-column">
-                <div className="card">
-                    <div className="card-header d-flex flex-row flex-wrap gap-2 justify-content-between p-3 pb-0 border-bottom-0 bg-white">
+                <div className="card border-0 bg-transparent">
+                    <div className="card-header d-flex flex-row flex-wrap gap-2 justify-content-between p-0 pb-3 border-bottom-0 bg-transparent">
                         <h5 className="card-title m-0">Order List</h5>
-                        <div className="btn-group btn-group-sm" role="group" aria-label="radio toggle button group">
+                        <div className="btn-group btn-group-sm" role="group">
                             <input type="radio" className="btn-check" name="sort-type" id="sort-type-date" checked={sortType === 'date'} onChange={() => setSortType('date')}/>
                             <label className="btn btn-outline-dark" htmlFor="sort-type-date">Date</label>
                             
@@ -170,7 +146,7 @@ function OrderTrackPage() {
                             <label className="btn btn-outline-dark" htmlFor="sort-type-status">Status</label>
                         </div>
                     </div>
-                    <div className="card-body">
+                    <div className="card-body p-0">
                         <OrderListTable sortType={sortType} />
                     </div>
                 </div>
