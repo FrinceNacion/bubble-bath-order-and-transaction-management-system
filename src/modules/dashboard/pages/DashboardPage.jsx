@@ -83,6 +83,46 @@ function TotalCustomersCard() {
   )
 }
 
+function RevenueAnalytics() {
+  const [analytics, setAnalytics] = useState(null);
+
+  const fetchAnalytics = async () => {
+    try {
+      const response = await fetch(API_ENDPOINTS.BILLING.GET_ANALYTICS, { 
+        method: 'POST', 
+        credentials: 'include' 
+      });
+      const data = await response.json();
+      if (data.success) {
+        setAnalytics(data.analytics);
+      }
+    } catch (error) {
+      console.error('Error fetching analytics:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, []);
+
+  return (
+    <>
+      <OverviewCard 
+        title="Today's Revenue" 
+        value={analytics ? `₱ ${parseFloat(analytics.today_revenue).toLocaleString()}` : "₱ 0"} 
+        icon="bi-currency-dollar" 
+        color="success" 
+      />
+      <OverviewCard 
+        title="Pending Payments" 
+        value={analytics ? `₱ ${parseFloat(analytics.pending_payments).toLocaleString()}` : "₱ 0"} 
+        icon="bi-hourglass-split" 
+        color="danger" 
+      />
+    </>
+  )
+}
+
 function DashboardPage() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -108,8 +148,9 @@ function DashboardPage() {
         <TotalOrdersCard />
         <PendingOrdersCard />
         <TotalCustomersCard />
-        <OverviewCard title="Today's Revenue" value="--" icon="bi-currency-dollar" color="success" />
+        <RevenueAnalytics />
       </div>
+
 
       <div className="container p-0 d-flex gap-3 flex-row flex-wrap-reverse">
         <RecentOrdersTable className="w-100" />
