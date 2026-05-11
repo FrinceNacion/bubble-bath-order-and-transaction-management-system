@@ -23,7 +23,11 @@ import CustomersPage from './modules/customers/pages/CustomersPage';
 import NewOrderPage from './modules/orders/pages/NewOrderPage';
 import OrderTrackPage from './modules/orders/pages/OrderTrackPage';
 
+// Billing Module
+import BillingListPage from './modules/billing/pages/BillingListPage';
+
 const router = createBrowserRouter([
+
   {
     path: "/",
     element: <LoginPage />,
@@ -55,8 +59,13 @@ const router = createBrowserRouter([
       {
         path: "orders",
         element: <OrderTrackPage />,
+      },
+      {
+        path: "billing",
+        element: <BillingListPage />,
       }
     ],
+
   },
   {
     path: "*",
