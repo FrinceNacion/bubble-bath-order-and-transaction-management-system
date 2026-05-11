@@ -22,7 +22,14 @@ export const API_ENDPOINTS = {
     },
     GARMENTS: {
         GET_BY_ORDER: `${BASE_URL}/garments/get_garments_by_order.php`,
+    },
+    BILLING: {
+        GET_ALL: `${BASE_URL}/billing/get_all_billings.php`,
+        GET_BY_ORDER: `${BASE_URL}/billing/get_billing_by_order.php`,
+        ADD_PAYMENT: `${BASE_URL}/billing/add_payment.php`,
+        GET_ANALYTICS: `${BASE_URL}/billing/get_revenue_analytics.php`,
     }
 };
+
 
 export default API_ENDPOINTS;
