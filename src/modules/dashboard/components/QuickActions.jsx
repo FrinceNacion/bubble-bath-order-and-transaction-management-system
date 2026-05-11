@@ -12,14 +12,14 @@ function QuickActions({className}) {
         <i className="bi bi-people"></i>
         Manage Customers
       </Link>
-      <a href="#" className="btn btn-outline-secondary d-flex align-items-center gap-2 w-100 mb-3">
+      <Link to="/billing" className="btn btn-outline-secondary d-flex align-items-center gap-2 w-100 mb-3">
         <i className="bi bi-receipt"></i>
         Process Payments
-      </a>
-      <a href="#" className="btn btn btn-outline-secondary d-flex align-items-center gap-2 w-100">
+      </Link>
+      <Link to="/reports" className="btn btn-outline-secondary d-flex align-items-center gap-2 w-100">
         <i className="bi bi-bar-chart"></i>
         View Reports
-      </a>
+      </Link>
     </div>
   );
 }
