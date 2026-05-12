@@ -5,17 +5,12 @@ import { showToast } from '../../../common/components/Toast';
 
 function ResetPasswordPage() {
     const navigate = useNavigate();
-    const location = useLocation();
     
     const [otp, setOtp] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [passwordStrength, setPasswordStrength] = useState({ score: 0, label: 'Weak', color: 'danger' });
-
-    const token = location.state?.token;
-    const email = location.state?.email;
-    const demoOtp = location.state?.demoOtp; // For demo purposes only
 
     useEffect(() => {
         if (!token || !email) {
@@ -57,6 +52,7 @@ function ResetPasswordPage() {
 
         setLoading(true);
 
+        // NOT WORKING, NO MAILER AND ENDPOINT YET
         try {
             const response = await fetch(API_ENDPOINTS.AUTH.RESET_PASSWORD, {
                 method: 'POST',
@@ -92,10 +88,10 @@ function ResetPasswordPage() {
                             <div className="text-center mb-4">
                                 <h3 className="fw-bold text-dark">Set New Password</h3>
                                 <p className="text-secondary small">Enter the 6-digit code sent to <strong>{email}</strong> and your new password.</p>
-                                {demoOtp && (
+                                {otp && (
                                     <div className="alert alert-info py-2 px-3 small mt-2">
                                         <i className="bi bi-info-circle me-2"></i>
-                                        Demo OTP: <strong>{demoOtp}</strong>
+                                        Demo OTP: <strong>{otp}</strong>
                                     </div>
                                 )}
                             </div>
