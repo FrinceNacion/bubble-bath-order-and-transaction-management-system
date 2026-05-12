@@ -8,10 +8,13 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 // Layout & Common
 import MainLayout from './common/components/MainLayout';
 import NotFound from './common/components/NotFound';
+import ToastContainer from './common/components/Toast';
 
 // Auth Module
 import LoginPage from './modules/auth/pages/LoginPage';
 import RegisterPage from './modules/auth/pages/RegisterPage';
+import ForgotPasswordPage from './modules/auth/pages/ForgotPasswordPage';
+import ResetPasswordPage from './modules/auth/pages/ResetPasswordPage';
 
 // Dashboard Module
 import DashboardPage from './modules/dashboard/pages/DashboardPage';
@@ -42,6 +45,14 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterPage />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPasswordPage />,
   },
   {
     path: "/",
@@ -82,6 +93,7 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <ToastContainer />
     <RouterProvider router={router} />
   </StrictMode>,
 )
