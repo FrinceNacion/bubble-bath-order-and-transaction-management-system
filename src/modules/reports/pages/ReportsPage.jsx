@@ -206,11 +206,11 @@ const ReportsPage = () => {
   };
 
   return (
-    <main className="container flex-fill p-4 p-xl-5 bg-light" style={{ minHeight: '100vh' }}>
-      <div className="d-flex justify-content-between align-items-center mb-4">
+    <main className="container flex-fill p-4 p-xl-5">
+      <div className="container d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
         <div>
           <h4 className="fw-bold text-dark mb-1">Business Intelligence & Analytics</h4>
-          <p className="text-muted small mb-0">Actionable insights for your laundry operations.</p>
+          <p className="text-muted small mb-0">Actionable insights for laundry operations.</p>
         </div>
         <div className="d-flex gap-2">
           <button className="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2 bg-white" onClick={exportCSV}>
