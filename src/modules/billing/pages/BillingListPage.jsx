@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { API_ENDPOINTS } from "../../../common/services/api";
 import PaymentModal from "../components/PaymentModal";
+import { generateInvoice } from "../utils/invoiceGenerator";
 
 function StatusBadge({ status }) {
     const configs = {
@@ -22,6 +23,7 @@ function BillingListPage() {
     const [loading, setLoading] = useState(true);
     const [selectedBilling, setSelectedBilling] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
+    const [isPrinting, setIsPrinting] = useState(null);
 
     const fetchBillings = async () => {
         setLoading(true);
@@ -44,6 +46,30 @@ function BillingListPage() {
     useEffect(() => {
         fetchBillings();
     }, []);
+
+    const handlePrintInvoice = async (billing) => {
+        setIsPrinting(billing.billing_id);
+        try {
+            const response = await fetch(API_ENDPOINTS.GARMENTS.GET_BY_ORDER, {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ order_id: billing.order_id })
+            });
+            const data = await response.json();
+            if (data.success) {
+                generateInvoice(billing, data.data || []);
+            } else {
+                console.error("Failed to fetch garments for invoice:", data.error);
+                alert("Failed to generate invoice. Please try again.");
+            }
+        } catch (error) {
+            console.error("Error generating invoice:", error);
+            alert("Error generating invoice.");
+        } finally {
+            setIsPrinting(null);
+        }
+    };
 
     const filteredBillings = billings.filter(b => 
         b.customer_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -110,13 +136,27 @@ function BillingListPage() {
                                             <StatusBadge status={b.status} />
                                         </td>
                                         <td className="px-4 text-end">
-                                            <button 
-                                                className="btn btn-sm btn-dark px-3 rounded-pill"
-                                                onClick={() => setSelectedBilling(b)}
-                                            >
-                                                <i className="bi bi-wallet2 me-2"></i>
-                                                {b.status === 'paid' ? 'View' : 'Pay'}
-                                            </button>
+                                            <div className="d-flex justify-content-end gap-2">
+                                                <button 
+                                                    className="btn btn-sm btn-outline-primary px-3 rounded-pill"
+                                                    onClick={() => handlePrintInvoice(b)}
+                                                    disabled={isPrinting === b.billing_id}
+                                                    title="Print Invoice"
+                                                >
+                                                    {isPrinting === b.billing_id ? (
+                                                        <div className="spinner-border spinner-border-sm" role="status"></div>
+                                                    ) : (
+                                                        <i className="bi bi-printer"></i>
+                                                    )}
+                                                </button>
+                                                <button 
+                                                    className="btn btn-sm btn-dark px-3 rounded-pill"
+                                                    onClick={() => setSelectedBilling(b)}
+                                                >
+                                                    <i className="bi bi-wallet2 me-2"></i>
+                                                    {b.status === 'paid' ? 'View' : 'Pay'}
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))
