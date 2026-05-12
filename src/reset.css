@@ -53,3 +53,39 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+/* Responsive Sidebar */
+@media (max-width: 767.98px) {
+  .sidebar-mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+    transition: opacity 0.3s ease;
+  }
+  .sidebar-responsive {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1045;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  .sidebar-responsive.show {
+    transform: translateX(0);
+  }
+}
+@media (min-width: 768px) {
+  .sidebar-mobile-overlay {
+    display: none !important;
+  }
+  .sidebar-responsive {
+    position: relative;
+    transform: none;
+    transition: none;
+  }
+}
