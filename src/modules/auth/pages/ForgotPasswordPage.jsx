@@ -12,6 +12,7 @@ function ForgotPasswordPage() {
         e.preventDefault();
         setLoading(true);
 
+        // NOT WORKING, NO MAILER AND ENDPOINT YET
         try {
             const response = await fetch(API_ENDPOINTS.AUTH.FORGOT_PASSWORD, {
                 method: 'POST',
@@ -22,9 +23,7 @@ function ForgotPasswordPage() {
 
             if (data.success) {
                 showToast(data.message, 'success');
-                // In a real app, we would only pass the token. 
-                // For this demo, we pass the OTP from the response.
-                navigate('/reset-password', { state: { token: data.token, email, demoOtp: data.otp } });
+                navigate('/reset-password');
             } else {
                 showToast(data.error || 'Failed to request reset code.', 'error');
             }
