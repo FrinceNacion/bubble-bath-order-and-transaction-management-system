@@ -1,4 +1,6 @@
 import react from "react";
+import { showToast } from "../../../common/components/Toast";
+
 function GarmentForm({ garments, setGarments }) {
     const [garmentType, setGarmentType] = react.useState("");
     const [garmentService, setGarmentService] = react.useState("");
@@ -9,40 +11,62 @@ function GarmentForm({ garments, setGarments }) {
 
     const handleRemoveGarment = (id) => {
         setGarments(garments.filter(garment => garment.id !== id));
+        showToast("Garment removed.", "info");
     };
 
     const handleGarmentPrice = (e) => {
-        if (e.target.value.length > 1 && e.target.value[0] === "0") {
-            e.target.value = e.target.value.slice(1);
+        let val = e.target.value;
+        // Allow only numbers and a single decimal point
+        val = val.replace(/[^0-9.]/g, '');
+        if ((val.match(/\./g) || []).length > 1) {
+            val = val.substring(0, val.lastIndexOf("."));
         }
-        e.target.value = e.target.value.replace(/[^0-9]/g, "");
-
-        setGarmentPrice(e.target.value);
+        setGarmentPrice(val);
+        calculateSubtotal(garmentQty, val);
     };
-    const handleSubTotal = (e) => {
-        const subtotal = garmentQty * e;
-        setGarmentSubtotal(subtotal);
-        console.log(subtotal);
+
+    const handleGarmentQty = (e) => {
+        const val = e.target.value.replace(/[^0-9]/g, '');
+        setGarmentQty(val);
+        calculateSubtotal(val, garmentPrice);
+    };
+
+    const calculateSubtotal = (qty, price) => {
+        const q = parseInt(qty) || 0;
+        const p = parseFloat(price) || 0;
+        setGarmentSubtotal(q * p);
     };
 
     function handleSubmit(e) {
         e.preventDefault();
-        const garment = {
-            id: Date.now(),
-            garmentType,
-            garmentService,
-            garmentQty,
-            garmentPrice,
-            garmentSubtotal,
-            garmentNotes
-        };
 
-        if (garmentType === "" || garmentService === "" || garmentQty === "" || garmentPrice === "") {
-            alert("Please fill in all the fields");
+        if (!garmentType || !garmentService || !garmentQty || !garmentPrice) {
+            showToast("Please fill in all required garment fields.", "warning");
             return;
         }
 
+        if (parseInt(garmentQty) <= 0) {
+            showToast("Quantity must be at least 1.", "warning");
+            return;
+        }
+
+        if (parseFloat(garmentPrice) <= 0) {
+            showToast("Price must be greater than 0.", "warning");
+            return;
+        }
+
+        const garment = {
+            id: Date.now(),
+            garmentType: garmentType.trim(),
+            garmentService: garmentService.trim(),
+            garmentQty: parseInt(garmentQty),
+            garmentPrice: parseFloat(garmentPrice),
+            garmentSubtotal: parseFloat(garmentSubtotal),
+            garmentNotes: garmentNotes.trim()
+        };
+
         setGarments([...garments, garment]);
+        showToast(`Added ${garmentType} to list.`, "success");
 
         setGarmentType("");
         setGarmentService("");
@@ -80,13 +104,13 @@ function GarmentForm({ garments, setGarments }) {
                         <label htmlFor="garmentQty" className="form-label text-dark">
                             Qty
                         </label>
-                        <input id="garmentQty" type="number" className="form-control" min="1" value={garmentQty} onChange={(e) => setGarmentQty(e.target.value)} />
+                        <input id="garmentQty" type="text" className="form-control" value={garmentQty} onChange={handleGarmentQty} placeholder="0" />
                     </div>
                     <div className="col-6 col-sm-4 col-md-2">
                         <label htmlFor="garmentPrice" className="form-label text-dark">
                             Price
                         </label>
-                        <input id="garmentPrice" type="text" className="form-control" value={garmentPrice} onChange={(e) => { handleGarmentPrice(e); handleSubTotal(e.target.value) }} />
+                        <input id="garmentPrice" type="text" className="form-control" value={garmentPrice} onChange={handleGarmentPrice} placeholder="0.00" />
                     </div>
                     <div className="col-6 col-sm-4 col-md-2">
                         <label htmlFor="garmentSubtotal" className="form-label text-dark">

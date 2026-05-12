@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import StatusBadge from "../../../common/components/StatusBadge";
 import { API_ENDPOINTS } from "../../../common/services/api";
+import { showToast } from "../../../common/components/Toast";
 
 function OrderDetailsModal({ order, onHide, onRefresh }) {
     const [garments, setGarments] = useState([]);
+    const [auditLogs, setAuditLogs] = useState([]);
     const [loadingGarments, setLoadingGarments] = useState(true);
+    const [loadingLogs, setLoadingLogs] = useState(true);
     const [statusUpdating, setStatusUpdating] = useState(false);
     const [currentStatus, setCurrentStatus] = useState(order.status || 'Pending');
 
@@ -16,16 +19,12 @@ function OrderDetailsModal({ order, onHide, onRefresh }) {
             const response = await fetch(API_ENDPOINTS.GARMENTS.GET_BY_ORDER, {
                 method: 'POST',
                 credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ order_id: order.order_id })
             });
             const data = await response.json();
             if (data.success) {
                 setGarments(data.data || []);
-            } else {
-                console.error("Error fetching garments:", data.error);
             }
         } catch (error) {
             console.error("Fetch garments failed:", error);
@@ -34,8 +33,29 @@ function OrderDetailsModal({ order, onHide, onRefresh }) {
         }
     };
 
+    const fetchAuditLogs = async () => {
+        setLoadingLogs(true);
+        try {
+            const response = await fetch(API_ENDPOINTS.ORDERS.GET_AUDIT_LOG, {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ order_id: order.order_id })
+            });
+            const data = await response.json();
+            if (data.success) {
+                setAuditLogs(data.logs || []);
+            }
+        } catch (error) {
+            console.error("Fetch audit logs failed:", error);
+        } finally {
+            setLoadingLogs(false);
+        }
+    };
+
     useEffect(() => {
         fetchGarments();
+        fetchAuditLogs();
     }, [order.order_id]);
 
     const handleUpdateStatus = async (newStatus) => {
@@ -50,14 +70,16 @@ function OrderDetailsModal({ order, onHide, onRefresh }) {
             });
             const data = await response.json();
             if (data.success) {
+                showToast(`Status updated to ${newStatus}`, "success");
                 setCurrentStatus(newStatus);
+                fetchAuditLogs();
                 if (onRefresh) onRefresh();
             } else {
-                alert("Failed to update status: " + data.error);
+                showToast(data.error || "Failed to update status", "error");
             }
         } catch (error) {
             console.error("Update status failed:", error);
-            alert("Error updating status. Please try again.");
+            showToast("An error occurred while updating status.", "error");
         } finally {
             setStatusUpdating(false);
         }
@@ -123,7 +145,7 @@ function OrderDetailsModal({ order, onHide, onRefresh }) {
                         {/* Garments Table */}
                         <div className="d-flex flex-column">
                             <p className="m-0 text-secondary small fw-medium mb-2">Garments</p>
-                            <div className="table-responsive rounded border">
+                            <div className="table-responsive rounded border mb-4">
                                 <table className="table table-hover m-0 align-middle">
                                     <thead className="table-light">
                                         <tr>
@@ -162,6 +184,50 @@ function OrderDetailsModal({ order, onHide, onRefresh }) {
                                         )}
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+
+                        {/* Order History (Audit Logs) */}
+                        <div className="d-flex flex-column">
+                            <p className="m-0 text-secondary small fw-medium mb-2">Order History</p>
+                            <div className="border rounded p-3 bg-white" style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                                {loadingLogs ? (
+                                    <div className="text-center py-3 text-secondary">
+                                        <div className="spinner-border spinner-border-sm me-2" role="status"></div>
+                                        <span>Loading history...</span>
+                                    </div>
+                                ) : auditLogs.length > 0 ? (
+                                    <div className="timeline-small">
+                                        {auditLogs.map((log, index) => (
+                                            <div key={index} className="d-flex gap-3 mb-3 pb-2 border-bottom border-light">
+                                                <div className="text-center" style={{ width: '40px' }}>
+                                                    <div className="rounded-circle bg-light d-flex align-items-center justify-content-center" style={{ width: '32px', height: '32px' }}>
+                                                        <i className="bi bi-clock-history text-secondary" style={{ fontSize: '12px' }}></i>
+                                                    </div>
+                                                </div>
+                                                <div className="flex-fill">
+                                                    <div className="d-flex justify-content-between align-items-start">
+                                                        <span className="small fw-bold text-dark">
+                                                            {log.old_status ? (
+                                                                <>Changed from <span className="text-muted text-decoration-line-through">{log.old_status.replace('_', ' ')}</span> to <span className="text-primary">{log.new_status.replace('_', ' ')}</span></>
+                                                            ) : (
+                                                                <>Initial status set to <span className="text-primary">{log.new_status.replace('_', ' ')}</span></>
+                                                            )}
+                                                        </span>
+                                                        <span className="text-muted" style={{ fontSize: '10px' }}>{new Date(log.changed_at).toLocaleString()}</span>
+                                                    </div>
+                                                    <div className="small text-muted" style={{ fontSize: '11px' }}>
+                                                        By: <span className="fw-medium text-dark">{log.changed_by || 'System'}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-3 text-muted small">
+                                        No status changes recorded yet.
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
