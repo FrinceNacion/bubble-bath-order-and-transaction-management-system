@@ -74,7 +74,7 @@ function LoginPage() {
                                         required
                                     />
                                     <div className="d-flex text-center justify-content-end mt-1">
-                                        <small className="text-muted">Forgot your password? <a href="#" className="text-decoration-none">Reset it here</a></small>
+                                        <small className="text-muted">Forgot your password? <Link to="/forgot-password" title="Click here to reset your password" style={{ cursor: "pointer" }} className="text-decoration-none">Reset it here</Link></small>
                                     </div>
                                 </div>
 
