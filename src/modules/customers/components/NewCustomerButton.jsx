@@ -1,37 +1,62 @@
 import { useState } from "react";
 import { API_ENDPOINTS } from '../../../common/services/api';
+import { showToast } from "../../../common/components/Toast";
 
 function NewCustomerModal({onHide, onRefresh}) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [mobile, setMobile] = useState('');
     const [address, setAddress] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        fetch(API_ENDPOINTS.CUSTOMERS.ADD, {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: name.trim(), email: email.trim(), mobile: mobile.trim(), address: address.trim() })
-        })
-            .then(async response => {
-                const text = await response.text();
-                return text ? JSON.parse(text) : {};
-            })
-            .then(data => {
-                if (data.success) {
-                    if (onRefresh) onRefresh();
-                } else {
-                    console.error('Error adding customer:', data.error);
-                }
-            })
-            .catch(error => {
-                console.error('Error adding customer:', error);
-            });
+        if (!name.trim() || !mobile.trim()) {
+            showToast("Name and Mobile Number are required.", "warning");
+            return;
+        }
 
-        onHide();
+        // Simple mobile validation (numeric, 10-11 digits)
+        const mobileRegex = /^[0-9]{10,11}$/;
+        if (!mobileRegex.test(mobile.trim())) {
+            showToast("Please enter a valid 10 or 11-digit mobile number.", "warning");
+            return;
+        }
+
+        if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+            showToast("Please enter a valid email address.", "warning");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const response = await fetch(API_ENDPOINTS.CUSTOMERS.ADD, {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    name: name.trim(), 
+                    email: email.trim(), 
+                    mobile: mobile.trim(), 
+                    address: address.trim() 
+                })
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                showToast("Customer added successfully!", "success");
+                if (onRefresh) onRefresh();
+                onHide();
+            } else {
+                showToast(data.error || "Failed to add customer.", "error");
+            }
+        } catch (error) {
+            console.error('Error adding customer:', error);
+            showToast("An error occurred. Please try again.", "error");
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -63,8 +88,14 @@ function NewCustomerModal({onHide, onRefresh}) {
                         </form>
                     </div>
                     <div className="modal-footer border-0">
-                        <button type="button" className="btn btn-light" onClick={onHide}>Cancel</button>
-                        <button type="button" className="btn btn-primary" onClick={handleSubmit}>Add Customer</button>
+                        <button type="button" className="btn btn-light" onClick={onHide} disabled={loading}>Cancel</button>
+                        <button type="button" className="btn btn-primary" onClick={handleSubmit} disabled={loading}>
+                            {loading ? (
+                                <><span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Adding...</>
+                            ) : (
+                                "Add Customer"
+                            )}
+                        </button>
                     </div>
                 </div>
             </div>

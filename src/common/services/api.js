@@ -6,6 +6,8 @@ export const API_ENDPOINTS = {
         REGISTER: `${BASE_URL}/auth/register.php`,
         LOGOUT: `${BASE_URL}/auth/logout.php`,
         GET_USER: `${BASE_URL}/auth/get_user.php`,
+        FORGOT_PASSWORD: `${BASE_URL}/auth/forgot_password.php`,
+        RESET_PASSWORD: `${BASE_URL}/auth/reset_password.php`,
     },
     CUSTOMERS: {
         GET_ALL: `${BASE_URL}/customers/get_all_customers.php`,
@@ -19,6 +21,7 @@ export const API_ENDPOINTS = {
         GET_BY_CUSTOMER: `${BASE_URL}/orders/get_orders_by_customer.php`,
         ADD: `${BASE_URL}/orders/add_order.php`,
         UPDATE_STATUS: `${BASE_URL}/orders/update_order_status.php`,
+        GET_AUDIT_LOG: `${BASE_URL}/orders/get_order_audit_log.php`,
     },
     GARMENTS: {
         GET_BY_ORDER: `${BASE_URL}/garments/get_garments_by_order.php`,

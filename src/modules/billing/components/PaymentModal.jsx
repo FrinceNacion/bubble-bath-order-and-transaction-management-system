@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { API_ENDPOINTS } from "../../../common/services/api";
+import { showToast } from "../../../common/components/Toast";
 
 function PaymentModal({ billing, onHide, onRefresh }) {
     const [amountPaid, setAmountPaid] = useState(billing.remaining_balance || billing.total_amount);
@@ -50,13 +51,15 @@ function PaymentModal({ billing, onHide, onRefresh }) {
             });
             const data = await response.json();
             if (data.success) {
+                showToast("Payment recorded successfully!", "success");
                 onRefresh();
                 onHide();
             } else {
-                alert("Payment failed: " + data.error);
+                showToast(data.error || "Payment failed.", "error");
             }
         } catch (error) {
             console.error("Payment error:", error);
+            showToast("An error occurred during payment.", "error");
         } finally {
             setSubmitting(false);
         }
