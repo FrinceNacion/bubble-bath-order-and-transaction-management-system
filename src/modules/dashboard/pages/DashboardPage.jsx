@@ -12,9 +12,9 @@ function DashboardStats() {
 
   const fetchStats = async () => {
     try {
-      const response = await fetch(API_ENDPOINTS.ANALYTICS.GET_DASHBOARD_STATS, { 
-        method: 'POST', 
-        credentials: 'include' 
+      const response = await fetch(API_ENDPOINTS.ANALYTICS.GET_DASHBOARD_STATS, {
+        method: 'POST',
+        credentials: 'include'
       });
       const data = await response.json();
       if (data.success) {
@@ -47,8 +47,7 @@ function DashboardStats() {
       <OverviewCard title="Pending Orders" value={stats?.pending_orders || "0"} icon="bi-box-seam" color="warning" />
       <OverviewCard title="Completed Orders" value={stats?.completed_orders || "0"} icon="bi-check-circle" color="success" />
       <OverviewCard title="Today's Revenue" value={`₱ ${parseFloat(stats?.today_revenue || 0).toLocaleString()}`} icon="bi-currency-dollar" color="success" />
-      <OverviewCard title="Monthly Revenue" value={`₱ ${parseFloat(stats?.monthly_revenue || 0).toLocaleString()}`} icon="bi-calendar-check" color="info" />
-      <OverviewCard title="Active Customers" value={stats?.active_customers || "0"} icon="bi-people" color="dark" />
+      <OverviewCard title="Pending Payments" value={`₱ ${parseFloat(stats?.pending_payments || 0).toLocaleString()}`} icon="bi-hourglass-split" color="danger" />
     </div>
   );
 }
@@ -72,7 +71,7 @@ function DashboardPage() {
   return (
     <main className="container flex-fill p-4 p-xl-5">
       <h4 className="fw-semibold text-dark mb-1">Dashboard Overview</h4>
-      <p className="text-secondary small mb-4">Welcome back, {user?.name}!</p>
+      <p className="text-secondary small mb-4">Welcome back, <span className="fw-bold">{String(user?.name)?.trimEnd()}</span>!</p>
 
       <DashboardStats />
 
