@@ -26,6 +26,9 @@ import OrderTrackPage from './modules/orders/pages/OrderTrackPage';
 // Billing Module
 import BillingListPage from './modules/billing/pages/BillingListPage';
 
+// Reports Module
+import ReportsPage from './modules/reports/pages/ReportsPage';
+
 const router = createBrowserRouter([
 
   {
@@ -63,6 +66,10 @@ const router = createBrowserRouter([
       {
         path: "billing",
         element: <BillingListPage />,
+      },
+      {
+        path: "reports",
+        element: <ReportsPage />,
       }
     ],
 

@@ -28,6 +28,12 @@ export const API_ENDPOINTS = {
         GET_BY_ORDER: `${BASE_URL}/billing/get_billing_by_order.php`,
         ADD_PAYMENT: `${BASE_URL}/billing/add_payment.php`,
         GET_ANALYTICS: `${BASE_URL}/billing/get_revenue_analytics.php`,
+    },
+    ANALYTICS: {
+        GET_DASHBOARD_STATS: `${BASE_URL}/analytics/get_dashboard_stats.php`,
+        GET_CHART_DATA: `${BASE_URL}/analytics/get_chart_data.php`,
+        GET_DISTRIBUTION_DATA: `${BASE_URL}/analytics/get_distribution_data.php`,
+        GET_DETAILED_REPORT: `${BASE_URL}/analytics/get_detailed_report.php`,
     }
 };
 
