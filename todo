@@ -1,0 +1,22 @@
+# Notification System for Order Ready Alerts
+
+## Backend Development
+- [ ] Create notification service module with SMS and email providers
+- [ ] Implement SMS service integration (Twilio/SendGrid/etc.)
+- [ ] Implement email service integration (SendGrid/Mailgun/etc.)
+- [ ] Add notification preferences to customer profile (SMS only, email only, both, none)
+- [ ] Create notification templates for order ready messages
+- [ ] Update order status API to trigger notifications when status changes to "ready"
+- [ ] Add notification history/logging to database
+- [ ] Implement retry logic for failed notifications
+
+## Frontend Development
+- [ ] Add confirmation dialog when marking order as ready (with notification preview)
+- [ ] Display notification status in order details (sent/failed/pending)
+
+
+## Documentation
+- [ ] Update API documentation for new endpoints
+- [ ] Create user guide for notification preferences
+- [ ] Document notification service configuration
+- [ ] Add troubleshooting guide for notification failures
