@@ -132,10 +132,10 @@ function PaymentModal({ billing, onHide, onRefresh }) {
                                         <label className="form-label small text-secondary">Amount to Pay</label>
                                         <div className="input-group">
                                             <span className="input-group-text">₱</span>
-                                            <input 
-                                                type="number" 
-                                                className="form-control" 
-                                                value={amountPaid} 
+                                            <input
+                                                type="number"
+                                                className="form-control"
+                                                value={amountPaid}
                                                 onChange={(e) => setAmountPaid(e.target.value)}
                                                 max={billing.remaining_balance}
                                                 step="0.01"
@@ -145,9 +145,9 @@ function PaymentModal({ billing, onHide, onRefresh }) {
                                     </div>
                                     <div>
                                         <label className="form-label small text-secondary">Payment Method</label>
-                                        <select 
-                                            className="form-select" 
-                                            value={paymentMethod} 
+                                        <select
+                                            className="form-select"
+                                            value={paymentMethod}
                                             onChange={(e) => setPaymentMethod(e.target.value)}
                                         >
                                             <option value="cash">Cash</option>
@@ -157,15 +157,15 @@ function PaymentModal({ billing, onHide, onRefresh }) {
                                     </div>
                                     <div>
                                         <label className="form-label small text-secondary">Notes (Optional)</label>
-                                        <textarea 
-                                            className="form-control" 
-                                            rows="2" 
-                                            value={notes} 
+                                        <textarea
+                                            className="form-control"
+                                            rows="2"
+                                            value={notes}
                                             onChange={(e) => setNotes(e.target.value)}
                                         />
                                     </div>
-                                    <button 
-                                        type="submit" 
+                                    <button
+                                        type="submit"
                                         className="btn btn-dark w-100 py-2 mt-2"
                                         disabled={submitting || amountPaid <= 0}
                                     >

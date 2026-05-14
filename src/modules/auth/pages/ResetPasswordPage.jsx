@@ -5,7 +5,7 @@ import { showToast } from '../../../common/components/Toast';
 
 function ResetPasswordPage() {
     const navigate = useNavigate();
-    
+
     const [otp, setOtp] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -57,10 +57,10 @@ function ResetPasswordPage() {
             const response = await fetch(API_ENDPOINTS.AUTH.RESET_PASSWORD, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    token, 
-                    otp, 
-                    new_password: newPassword 
+                body: JSON.stringify({
+                    token,
+                    otp,
+                    new_password: newPassword
                 })
             });
             const data = await response.json();
@@ -125,9 +125,9 @@ function ResetPasswordPage() {
                                     {newPassword && (
                                         <div className="mt-2">
                                             <div className="progress" style={{ height: '4px' }}>
-                                                <div 
-                                                    className={`progress-bar bg-${passwordStrength.color}`} 
-                                                    role="progressbar" 
+                                                <div
+                                                    className={`progress-bar bg-${passwordStrength.color}`}
+                                                    role="progressbar"
                                                     style={{ width: `${(passwordStrength.score + 1) * 20}%` }}
                                                 ></div>
                                             </div>
@@ -152,8 +152,8 @@ function ResetPasswordPage() {
                                     />
                                 </div>
 
-                                <button 
-                                    type="submit" 
+                                <button
+                                    type="submit"
                                     className="btn btn-primary btn-lg w-100 rounded-3 mb-3"
                                     disabled={loading}
                                 >
@@ -166,7 +166,7 @@ function ResetPasswordPage() {
 
                                 <div className="text-center">
                                     <Link to="/forgot-password" onClick={(e) => {
-                                        if(!window.confirm("Go back? Your progress will be lost.")) e.preventDefault();
+                                        if (!window.confirm("Go back? Your progress will be lost.")) e.preventDefault();
                                     }} className="text-decoration-none small text-secondary">
                                         Didn't get a code? Resend
                                     </Link>

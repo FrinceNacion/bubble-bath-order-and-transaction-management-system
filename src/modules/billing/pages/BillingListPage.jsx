@@ -71,7 +71,7 @@ function BillingListPage() {
         }
     };
 
-    const filteredBillings = billings.filter(b => 
+    const filteredBillings = billings.filter(b =>
         b.customer_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         b.order_id.toString().includes(searchTerm)
     );
@@ -88,10 +88,10 @@ function BillingListPage() {
                         <span className="input-group-text bg-white border-end-0">
                             <i className="bi bi-search text-secondary"></i>
                         </span>
-                        <input 
-                            type="text" 
-                            className="form-control border-start-0" 
-                            placeholder="Search customer or Order ID..." 
+                        <input
+                            type="text"
+                            className="form-control border-start-0"
+                            placeholder="Search customer or Order ID..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -137,7 +137,7 @@ function BillingListPage() {
                                         </td>
                                         <td className="px-4 text-end">
                                             <div className="d-flex justify-content-end gap-2">
-                                                <button 
+                                                <button
                                                     className="btn btn-sm btn-outline-primary px-3 rounded-pill"
                                                     onClick={() => handlePrintInvoice(b)}
                                                     disabled={isPrinting === b.billing_id}
@@ -149,7 +149,7 @@ function BillingListPage() {
                                                         <i className="bi bi-printer"></i>
                                                     )}
                                                 </button>
-                                                <button 
+                                                <button
                                                     className="btn btn-sm btn-dark px-3 rounded-pill"
                                                     onClick={() => setSelectedBilling(b)}
                                                 >
@@ -174,9 +174,9 @@ function BillingListPage() {
             </div>
 
             {selectedBilling && (
-                <PaymentModal 
-                    billing={selectedBilling} 
-                    onHide={() => setSelectedBilling(null)} 
+                <PaymentModal
+                    billing={selectedBilling}
+                    onHide={() => setSelectedBilling(null)}
                     onRefresh={fetchBillings}
                 />
             )}

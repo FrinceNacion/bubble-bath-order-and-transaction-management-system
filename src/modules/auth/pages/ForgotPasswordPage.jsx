@@ -68,8 +68,8 @@ function ForgotPasswordPage() {
                                     </div>
                                 </div>
 
-                                <button 
-                                    type="submit" 
+                                <button
+                                    type="submit"
                                     className="btn btn-primary btn-lg w-100 rounded-3 mb-3 d-flex align-items-center justify-content-center gap-2"
                                     disabled={loading}
                                 >

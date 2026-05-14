@@ -4,7 +4,7 @@ import { API_ENDPOINTS } from '../../../common/services/api';
 
 function RegisterPage() {
     const navigate = useNavigate();
-    
+
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -15,7 +15,7 @@ function RegisterPage() {
         e.preventDefault();
         setError('');
 
-        if(password.length < 6) {
+        if (password.length < 6) {
             setError("Password must be at least 6 characters long!");
             return;
         }

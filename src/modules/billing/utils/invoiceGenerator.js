@@ -19,12 +19,12 @@ export const generateInvoice = (billing, garments) => {
     doc.setFont("helvetica", "bold");
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text("BUBBLE BATH", 38, 24);
-    
+
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
     doc.text("Laundry & Dry Cleaning", 38, 30);
-    
+
     doc.setFontSize(9);
     doc.setTextColor(lightGray[0], lightGray[1], lightGray[2]);
     doc.text("358 Biñang 2nd F.Halili Ave, Bocaue Bulacan", 14, 45);
@@ -40,7 +40,7 @@ export const generateInvoice = (billing, garments) => {
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
-    
+
     const invoiceDetails = [
         ['Invoice Number:', `INV-${String(billing.billing_id).padStart(5, '0')}`],
         ['Order Reference:', `#${billing.order_id}`],
@@ -109,7 +109,7 @@ export const generateInvoice = (billing, garments) => {
 
     // --- Financial Summary ---
     const finalY = doc.lastAutoTable.finalY + 10;
-    
+
     // Summary values
     const summaryData = [
         ['Subtotal:', `P ${parseFloat(billing.subtotal).toFixed(2)}`],
@@ -145,7 +145,7 @@ export const generateInvoice = (billing, garments) => {
 
     // --- Footer ---
     const pageHeight = doc.internal.pageSize.height;
-    
+
     doc.setDrawColor(220, 220, 220);
     doc.line(14, pageHeight - 30, 196, pageHeight - 30);
 
@@ -153,7 +153,7 @@ export const generateInvoice = (billing, garments) => {
     doc.setFontSize(10);
     doc.setTextColor(darkGray[0], darkGray[1], darkGray[2]);
     doc.text("Thank you for your business!", 105, pageHeight - 22, { align: "center" });
-    
+
     doc.setFontSize(8);
     doc.setTextColor(lightGray[0], lightGray[1], lightGray[2]);
     doc.text(`Generated on: ${new Date().toLocaleString()}`, 105, pageHeight - 16, { align: "center" });
