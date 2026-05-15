@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 function CustomerCard({ customer, onRefresh }) {
     const [userDetails, setUserDetails] = useState({});
-    
+
     useEffect(() => {
         setUserDetails(customer);
     }, [customer]);
@@ -20,14 +20,14 @@ function CustomerCard({ customer, onRefresh }) {
                     </div>
                 </div>
                 <div className="d-flex align-items-start gap-2">
-                    <EditCustomerButton customer={customer} onRefresh={onRefresh}/>
+                    <EditCustomerButton customer={customer} onRefresh={onRefresh} />
                     {/*<button className="btn btn-danger d-flex align-items-center">
                         <i className="bi bi-trash"></i>
                     </button>}*/}
                 </div>
             </div>
         </div>
-    )    
+    )
 }
 
 export default CustomerCard;

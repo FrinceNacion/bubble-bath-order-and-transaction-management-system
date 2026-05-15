@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { API_ENDPOINTS } from '../../../common/services/api';
 
-function EditCustomerModal({onHide, customer, onRefresh}){
+function EditCustomerModal({ onHide, customer, onRefresh }) {
     const [name, setName] = useState(customer?.name || '');
     const [email, setEmail] = useState(customer?.email || '');
     const [mobile, setMobile] = useState(customer?.contact_number || customer?.mobile || '');
     const [address, setAddress] = useState(customer?.address || '');
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -15,7 +15,7 @@ function EditCustomerModal({onHide, customer, onRefresh}){
         const trimmedMobile = mobile.trim() || customer?.contact_number || customer?.mobile || '';
         const trimmedAddress = address.trim() || customer?.address || '';
 
-        const customer_id = customer.customer_id;   
+        const customer_id = customer.customer_id;
 
         fetch(API_ENDPOINTS.CUSTOMERS.UPDATE, {
             method: 'POST',
@@ -41,7 +41,7 @@ function EditCustomerModal({onHide, customer, onRefresh}){
         onHide();
     }
     return (
-        <div className="modal fade show" style={{display: "block", backgroundColor: "rgba(0,0,0,0.5)"}}>
+        <div className="modal fade show" style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}>
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content border-0 shadow">
                     <div className="modal-header border-0">
@@ -52,7 +52,7 @@ function EditCustomerModal({onHide, customer, onRefresh}){
                         <form onSubmit={handleSubmit}>
                             <div className="mb-3">
                                 <label htmlFor="customerName" className="form-label text-black small fw-medium">Name</label>
-                                <input type="text" className="form-control" id="customerName" placeholder="Customer Name" value={name} onChange={(e) => setName(e.target.value)} required/>
+                                <input type="text" className="form-control" id="customerName" placeholder="Customer Name" value={name} onChange={(e) => setName(e.target.value)} required />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="customerEmail" className="form-label text-black small fw-medium">Email</label>
@@ -60,11 +60,11 @@ function EditCustomerModal({onHide, customer, onRefresh}){
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="customerMobile" className="form-label text-black small fw-medium">Mobile No.</label>
-                                <input type="text" className="form-control" id="customerMobile" placeholder="Customer Mobile No." value={mobile} onChange={(e) => setMobile(e.target.value)} required/>
+                                <input type="text" className="form-control" id="customerMobile" placeholder="Customer Mobile No." value={mobile} onChange={(e) => setMobile(e.target.value)} required />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="customerAddress" className="form-label text-black small fw-medium">Address</label>
-                                <input type="text" className="form-control" id="customerAddress" placeholder="Customer Address" value={address} onChange={(e) => setAddress(e.target.value)}/>
+                                <input type="text" className="form-control" id="customerAddress" placeholder="Customer Address" value={address} onChange={(e) => setAddress(e.target.value)} />
                             </div>
                         </form>
                     </div>
@@ -78,7 +78,7 @@ function EditCustomerModal({onHide, customer, onRefresh}){
     )
 }
 
-function EditCustomerButton({customer, onRefresh}){
+function EditCustomerButton({ customer, onRefresh }) {
     const [showModal, setShowModal] = useState(false);
 
     return (

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { API_ENDPOINTS } from '../../../common/services/api';
 import { showToast } from "../../../common/components/Toast";
 
-function NewCustomerModal({onHide, onRefresh}) {
+function NewCustomerModal({ onHide, onRefresh }) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [mobile, setMobile] = useState('');
@@ -35,15 +35,15 @@ function NewCustomerModal({onHide, onRefresh}) {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    name: name.trim(), 
-                    email: email.trim(), 
-                    mobile: mobile.trim(), 
-                    address: address.trim() 
+                body: JSON.stringify({
+                    name: name.trim(),
+                    email: email.trim(),
+                    mobile: mobile.trim(),
+                    address: address.trim()
                 })
             });
             const data = await response.json();
-            
+
             if (data.success) {
                 showToast("Customer added successfully!", "success");
                 if (onRefresh) onRefresh();
@@ -60,7 +60,7 @@ function NewCustomerModal({onHide, onRefresh}) {
     }
 
     return (
-        <div className="modal fade show" style={{display: "block", backgroundColor: "rgba(0,0,0,0.5)"}}>
+        <div className="modal fade show" style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}>
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content border-0 shadow">
                     <div className="modal-header border-0">
@@ -71,7 +71,7 @@ function NewCustomerModal({onHide, onRefresh}) {
                         <form onSubmit={handleSubmit}>
                             <div className="mb-3">
                                 <label htmlFor="customerName" className="form-label text-black small fw-medium">Name</label>
-                                <input type="text" className="form-control" id="customerName" placeholder="Customer Name" value={name} onChange={(e) => setName(e.target.value)} required/>
+                                <input type="text" className="form-control" id="customerName" placeholder="Customer Name" value={name} onChange={(e) => setName(e.target.value)} required />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="customerEmail" className="form-label text-black small fw-medium">Email</label>
@@ -79,11 +79,11 @@ function NewCustomerModal({onHide, onRefresh}) {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="customerMobile" className="form-label text-black small fw-medium">Mobile No.</label>
-                                <input type="text" className="form-control" id="customerMobile" placeholder="Customer Mobile No." value={mobile} onChange={(e) => setMobile(e.target.value)} required/>
+                                <input type="text" className="form-control" id="customerMobile" placeholder="Customer Mobile No." value={mobile} onChange={(e) => setMobile(e.target.value)} required />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="customerAddress" className="form-label text-black small fw-medium">Address</label>
-                                <input type="text" className="form-control" id="customerAddress" placeholder="Customer Address" value={address} onChange={(e) => setAddress(e.target.value)}/>
+                                <input type="text" className="form-control" id="customerAddress" placeholder="Customer Address" value={address} onChange={(e) => setAddress(e.target.value)} />
                             </div>
                         </form>
                     </div>
@@ -104,7 +104,7 @@ function NewCustomerModal({onHide, onRefresh}) {
 
 }
 
-function NewCustomerButton({onRefresh}) {
+function NewCustomerButton({ onRefresh }) {
     const [showModal, setShowModal] = useState(false);
 
     return (
