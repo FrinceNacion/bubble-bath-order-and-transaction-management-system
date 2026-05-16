@@ -99,7 +99,7 @@ function OrderListTable({ sortType, sortDirection }) {
                             <div className="d-flex flex-row justify-content-between mb-3">
                                 <div className="d-flex flex-column">
                                     <p className="m-0 fw-semibold text-dark">{order.customer}</p>
-                                    <p className="small text-secondary m-0">Order #{order.order_id}</p>        
+                                    <p className="small text-secondary m-0">Order #{order.order_id}</p>
                                 </div>
                                 <div className="d-flex flex-column">
                                     <p className="m-0"><StatusBadge status={order.status} /></p>
@@ -125,8 +125,8 @@ function OrderListTable({ sortType, sortDirection }) {
                             </div>
                             <div className="d-flex flex-row gap-2 justify-content-end pt-2 border-top">
                                 <OrderDetailsButton order={order} onRefresh={fetchOrders} />
-                                <button 
-                                    className="btn btn-sm btn-outline-danger d-flex align-items-center gap-1" 
+                                <button
+                                    className="btn btn-sm btn-outline-danger d-flex align-items-center gap-1"
                                     onClick={() => initiateCancel(order.order_id)}
                                     disabled={order.status === 'Cancelled' || order.status === 'Claimed'}
                                 >
@@ -148,7 +148,7 @@ function OrderListTable({ sortType, sortDirection }) {
                 )}
             </div>
 
-            <ConfirmDialog 
+            <ConfirmDialog
                 show={confirmCancel.show}
                 title="Cancel Order"
                 message={`Are you sure you want to cancel order #${confirmCancel.orderId}? This action cannot be undone.`}
@@ -180,19 +180,19 @@ function OrderTrackPage() {
                         <h5 className="card-title m-0">Order List</h5>
                         <div className="d-flex gap-2">
                             <div className="btn-group btn-group-sm" role="group">
-                                <input type="radio" className="btn-check" name="sort-type" id="sort-type-date" checked={sortType === 'date'} onChange={() => setSortType('date')}/>
+                                <input type="radio" className="btn-check" name="sort-type" id="sort-type-date" checked={sortType === 'date'} onChange={() => setSortType('date')} />
                                 <label className="btn btn-outline-dark" htmlFor="sort-type-date">Date</label>
-                                
-                                <input type="radio" className="btn-check" name="sort-type" id="sort-type-customer" checked={sortType === 'customer'} onChange={() => setSortType('customer')}/>
+
+                                <input type="radio" className="btn-check" name="sort-type" id="sort-type-customer" checked={sortType === 'customer'} onChange={() => setSortType('customer')} />
                                 <label className="btn btn-outline-dark" htmlFor="sort-type-customer">Customer</label>
 
-                                <input type="radio" className="btn-check" name="sort-type" id="sort-type-amount" checked={sortType === 'amount'} onChange={() => setSortType('amount')}/>
+                                <input type="radio" className="btn-check" name="sort-type" id="sort-type-amount" checked={sortType === 'amount'} onChange={() => setSortType('amount')} />
                                 <label className="btn btn-outline-dark" htmlFor="sort-type-amount">Amount</label>
 
-                                <input type="radio" className="btn-check" name="sort-type" id="sort-type-quantity" checked={sortType === 'quantity'} onChange={() => setSortType('quantity')}/>
+                                <input type="radio" className="btn-check" name="sort-type" id="sort-type-quantity" checked={sortType === 'quantity'} onChange={() => setSortType('quantity')} />
                                 <label className="btn btn-outline-dark" htmlFor="sort-type-quantity">Quantity</label>
-                                
-                                <input type="radio" className="btn-check" name="sort-type" id="sort-type-status" checked={sortType === 'status'} onChange={() => setSortType('status')}/>
+
+                                <input type="radio" className="btn-check" name="sort-type" id="sort-type-status" checked={sortType === 'status'} onChange={() => setSortType('status')} />
                                 <label className="btn btn-outline-dark" htmlFor="sort-type-status">Status</label>
                             </div>
                             <button className="btn btn-sm btn-dark d-flex align-items-center gap-1" onClick={toggleSortDirection} title={`Currently: ${sortDirection === 'asc' ? 'Ascending' : 'Descending'}`}>
