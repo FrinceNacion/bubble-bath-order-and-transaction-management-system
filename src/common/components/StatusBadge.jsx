@@ -12,7 +12,7 @@ import './StatusBadge.css';
 const StatusBadge = ({ status, size = 'md', showIcon = true, className = '' }) => {
     // Normalize status: handle lowercase, underscores, and spaces
     const normalizedStatus = (status || 'pending').toLowerCase().replace(/\s+/g, '_').replace('-', '_');
-    
+
     // Mapping for display text and icons
     const statusMap = {
         pending: {

@@ -16,9 +16,9 @@ function ConfirmDialog({ show, title, message, variant = 'danger', confirmLabel 
     if (!show) return null;
 
     const variantMap = {
-        danger:  { icon: 'bi-exclamation-triangle-fill', iconColor: 'text-danger',  btnClass: 'btn-danger' },
-        warning: { icon: 'bi-exclamation-circle-fill',   iconColor: 'text-warning', btnClass: 'btn-warning' },
-        info:    { icon: 'bi-info-circle-fill',           iconColor: 'text-primary', btnClass: 'btn-primary' },
+        danger: { icon: 'bi-exclamation-triangle-fill', iconColor: 'text-danger', btnClass: 'btn-danger' },
+        warning: { icon: 'bi-exclamation-circle-fill', iconColor: 'text-warning', btnClass: 'btn-warning' },
+        info: { icon: 'bi-info-circle-fill', iconColor: 'text-primary', btnClass: 'btn-primary' },
     };
     const v = variantMap[variant] || variantMap.danger;
 

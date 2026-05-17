@@ -31,8 +31,8 @@ function MainLayout() {
                     </div>
                     <span className="fw-semibold text-dark">Bubble Bath</span>
                 </div>
-                <button 
-                    className="btn btn-light border-0 p-2" 
+                <button
+                    className="btn btn-light border-0 p-2"
                     onClick={() => setIsSidebarOpen(true)}
                 >
                     <i className="bi bi-list fs-4 text-dark"></i>
