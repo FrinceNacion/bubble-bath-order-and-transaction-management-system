@@ -22,9 +22,9 @@ function ToastItem({ toast, onRemove }) {
 
     const icons = {
         success: 'bi-check-circle-fill',
-        error:   'bi-x-circle-fill',
+        error: 'bi-x-circle-fill',
         warning: 'bi-exclamation-triangle-fill',
-        info:    'bi-info-circle-fill',
+        info: 'bi-info-circle-fill',
     };
 
     return (

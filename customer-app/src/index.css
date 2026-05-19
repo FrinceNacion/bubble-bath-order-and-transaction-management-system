@@ -1,0 +1,94 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+:root {
+  --primary-color: #0dcaf0; /* Info color from bootstrap, matching a clean blue/teal */
+  --primary-dark: #0bacce;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: #f8f9fa; /* Light gray background */
+}
+
+/* Custom styling for timeline */
+.timeline-steps {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.timeline-steps::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: #e9ecef;
+  z-index: 0;
+}
+
+.timeline-steps .timeline-progress {
+  position: absolute;
+  top: 15px;
+  left: 0;
+  height: 4px;
+  background-color: var(--primary-color);
+  z-index: 1;
+  transition: width 0.3s ease;
+}
+
+.timeline-step {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 25%;
+}
+
+.timeline-step-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: #e9ecef;
+  color: #adb5bd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+  border: 4px solid #f8f9fa; /* To hide the line behind */
+}
+
+.timeline-step.active .timeline-step-icon {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: #e0f7fa; /* Light teal border */
+}
+
+.timeline-step.completed .timeline-step-icon {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.timeline-step-label {
+  font-size: 0.85rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.timeline-step.active .timeline-step-label {
+  color: #212529;
+  font-weight: 600;
+}
+
+.timeline-step.completed .timeline-step-label {
+  color: #212529;
+}
