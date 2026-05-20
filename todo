@@ -16,7 +16,7 @@
 
 
 ## Documentation
-- [ ] Update API documentation for new endpoints
+- [x] Update API documentation for new endpoints
 - [ ] Create user guide for notification preferences
 - [ ] Document notification service configuration
 - [ ] Add troubleshooting guide for notification failures
